@@ -11,11 +11,7 @@ public class ErrorCodeRegistry {
     static {
         registry.put("GlobalErrorCode", GlobalErrorCode::valueOf);
         registry.put("GrpcErrorCode", GrpcErrorCode::valueOf);
-        registry.put("PatientErrorCode", PatientErrorCode::valueOf);
-        registry.put("GuardianErrorCode", GuardianErrorCode::valueOf);
         registry.put("AreaErrorCode", AreaErrorCode::valueOf);
-        registry.put("MemberErrorCode", MemberErrorCode::valueOf);
-        registry.put("PassErrorCode", PassErrorCode::valueOf);
         registry.put("TenantErrorCode", TenantErrorCode::valueOf);
     }
 
