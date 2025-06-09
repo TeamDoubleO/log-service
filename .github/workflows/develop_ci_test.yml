@@ -43,10 +43,6 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Write firebase service key
-        run: |
-          echo "${{ secrets.FIREBASE_KEY_JSON }}" | base64 -d > src/main/resources/firebase-service-account.json
-
       - name: Run Spotless check
         run: ./gradlew spotlessCheck
 

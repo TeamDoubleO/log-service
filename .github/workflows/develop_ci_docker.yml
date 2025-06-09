@@ -25,11 +25,6 @@ jobs:
 
       - run: chmod +x ./gradlew
 
-
-      - name: Write firebase service key
-        run: |
-          echo "${{ secrets.FIREBASE_KEY_JSON }}" | base64 -d > src/main/resources/firebase-service-account.json
-
       - name: Run tests
         run: ./gradlew test
 
@@ -50,6 +45,3 @@ jobs:
           tags: |
             sunwoo11/keywe_pass_service:latest
             sunwoo11/keywe_pass_service:dev
-
-      - name: Remove firebase key after build
-        run: rm src/main/resources/firebase-service-account.json
