@@ -9,14 +9,15 @@ import com.doubleo.logservice.domain.log.repository.BuildingEnterLogRepository;
 import com.doubleo.logservice.domain.log.repository.EnterLogRepository;
 import com.doubleo.logservice.domain.log.repository.IssuedLogAreaRepository;
 import com.doubleo.logservice.domain.log.repository.IssuedLogRepository;
+import com.doubleo.logservice.domain.stats.dto.AreaInfo;
 import com.doubleo.logservice.global.util.TenantValidator;
-import com.doubleo.passservice.domain.pass.dto.AreaInfo;
-import com.doubleo.passservice.grpc.client.AreaClient;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.doubleo.logservice.grpc.client.AreaClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

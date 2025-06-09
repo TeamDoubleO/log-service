@@ -5,9 +5,10 @@ import com.doubleo.logservice.domain.stats.dto.response.PassCountInfoResponse;
 import com.doubleo.logservice.domain.stats.repository.IssuedLogQueryRepository;
 import com.doubleo.logservice.global.enums.VisitCategory;
 import com.doubleo.logservice.global.util.TenantValidator;
-import com.doubleo.passservice.grpc.client.AreaClient;
 import java.time.LocalDate;
 import java.util.*;
+
+import com.doubleo.logservice.grpc.client.AreaClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
