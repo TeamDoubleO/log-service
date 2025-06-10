@@ -2,6 +2,7 @@ package com.doubleo.logservice.domain.log.consumer;
 
 import com.doubleo.logservice.domain.log.domain.EnterLog;
 import com.doubleo.logservice.domain.log.repository.EnterLogRepository;
+import com.doubleo.logservice.global.enums.VisitCategory;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -58,7 +59,8 @@ public class AreaEnterLogConsumer {
                             Long.parseLong((String) data.get("areaId")),
                             Long.parseLong((String) data.get("memberId")),
                             (String) data.get("memberName"),
-                            Long.parseLong((String) data.get("passId")));
+                            Long.parseLong((String) data.get("passId")),
+                            VisitCategory.valueOf((String) data.get("visitCategory")));
 
             enterLogRepository.save(enterLog);
             redisTemplate.opsForStream().acknowledge(GROUP, msg);

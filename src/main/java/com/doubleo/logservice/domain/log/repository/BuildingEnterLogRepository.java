@@ -14,27 +14,31 @@ import org.springframework.data.repository.query.Param;
 public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterLog, Long> {
     @Query(
             """
-    SELECT COUNT(*) FROM BuildingEnterLog l
-    WHERE l.direction = 'IN'
-    AND l.createdDt >= :start AND l.createdDt < :end
-""")
-    int countInLogsAtHour(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+            SELECT COUNT(l) FROM BuildingEnterLog l
+            WHERE l.direction = 'IN'
+              AND l.createdDt >= :start
+              AND l.createdDt < :end
+              AND l.tenantId = :tenantId
+            """)
+    int countInLogsAtHour(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
+            @Param("tenantId") String tenantId);
 
     Page<BuildingEnterLog> findAllByTenantId(String tenantId, Pageable pageable);
 
     @Query(
             """
-    SELECT new com.doubleo.logservice.domain.stats.dto.request.UpdateDailyEntryStatsRequest(
-        b.buildingId, b.memberName, p.visitCategory, COUNT(b)
-    )
-    FROM BuildingEnterLog b
-    JOIN IssuedLog p ON b.passId = p.passId
-    WHERE b.direction = 'IN'
-      AND b.createdDt >= :start
-      AND b.createdDt < :end
-      AND b.tenantId = :tenantId
-    GROUP BY b.buildingId, b.memberName, p.visitCategory
-""")
+            SELECT new com.doubleo.logservice.domain.stats.dto.request.UpdateDailyEntryStatsRequest(
+                b.buildingId, b.memberName, b.visitCategory, COUNT(b)
+            )
+            FROM BuildingEnterLog b
+            WHERE b.direction = 'IN'
+              AND b.createdDt >= :start
+              AND b.createdDt < :end
+              AND b.tenantId = :tenantId
+            GROUP BY b.buildingId, b.memberName, b.visitCategory
+            """)
     List<UpdateDailyEntryStatsRequest> countDailyGrouped(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
@@ -56,15 +60,14 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
 
     @Query(
             """
-    SELECT COUNT(b)
-    FROM BuildingEnterLog b
-    JOIN IssuedLog p ON b.passId = p.passId
-    WHERE b.direction = 'IN'
-      AND b.createdDt >= :start
-      AND b.createdDt < :end
-      AND b.tenantId = :tenantId
-      AND p.visitCategory = :visitCategory
-""")
+            SELECT COUNT(b)
+            FROM BuildingEnterLog b
+            WHERE b.direction = 'IN'
+              AND b.createdDt >= :start
+              AND b.createdDt < :end
+              AND b.tenantId = :tenantId
+              AND b.visitCategory = :visitCategory
+            """)
     int countEnteredByCategory(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
@@ -73,15 +76,14 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
 
     @Query(
             """
-    SELECT COUNT(b)
-    FROM BuildingEnterLog b
-    JOIN IssuedLog p ON b.passId = p.passId
-    WHERE b.direction = 'OUT'
-      AND b.createdDt >= :start
-      AND b.createdDt < :end
-      AND b.tenantId = :tenantId
-      AND p.visitCategory = :visitCategory
-""")
+            SELECT COUNT(b)
+            FROM BuildingEnterLog b
+            WHERE b.direction = 'OUT'
+              AND b.createdDt >= :start
+              AND b.createdDt < :end
+              AND b.tenantId = :tenantId
+              AND b.visitCategory = :visitCategory
+            """)
     int countExitedByCategory(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,

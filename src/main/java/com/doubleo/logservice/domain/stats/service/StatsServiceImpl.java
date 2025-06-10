@@ -61,7 +61,9 @@ public class StatsServiceImpl implements StatsService {
             if (cachedCount != null) {
                 total = Integer.parseInt(cachedCount);
             } else {
-                int count = buildingEnterLogRepository.countInLogsAtHour(hour, hour.plusHours(1));
+                int count =
+                        buildingEnterLogRepository.countInLogsAtHour(
+                                hour, hour.plusHours(1), tenantId);
                 redisTemplate
                         .opsForValue()
                         .set(redisKey, String.valueOf(count), Duration.ofSeconds(10));
