@@ -72,9 +72,8 @@ dependencies {
     implementation("org.modelmapper:modelmapper:3.1.1")
 
     // (1) hospital-interface 모듈
-    implementation "com.doubleo.grpc:hospital-interface:0.2.3"
-    implementation "com.doubleo.grpc:patient-interface:0.2.3"
-    implementation "com.doubleo.grpc:member-interface:0.2.3"
+    implementation "com.doubleo.grpc:hospital-interface:0.2.7"
+    implementation "com.doubleo.grpc:log-interface:0.2.7"
 
     // (2) gRPC 런타임
     implementation "io.grpc:grpc-netty:1.63.0"
@@ -135,10 +134,10 @@ tasks.register('updateGitHooks', Copy) {
 }
 
 
-//tasks.register('makeGitHooksExecutable', Exec) {
-//    commandLine 'chmod', '+x', './.git/hooks/pre-commit', './.git/hooks/prepare-commit-msg'
-//    dependsOn updateGitHooks
-//}
-//
-//compileJava.dependsOn makeGitHooksExecutable
-//
+tasks.register('makeGitHooksExecutable', Exec) {
+    commandLine 'chmod', '+x', './.git/hooks/pre-commit', './.git/hooks/prepare-commit-msg'
+    dependsOn updateGitHooks
+}
+
+compileJava.dependsOn makeGitHooksExecutable
+
