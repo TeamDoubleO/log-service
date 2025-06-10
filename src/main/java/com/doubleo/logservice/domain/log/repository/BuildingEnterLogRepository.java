@@ -14,11 +14,18 @@ import org.springframework.data.repository.query.Param;
 public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterLog, Long> {
     @Query(
             """
-    SELECT COUNT(*) FROM BuildingEnterLog l
-    WHERE l.direction = 'IN'
-    AND l.createdDt >= :start AND l.createdDt < :end
-""")
-    int countInLogsAtHour(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+            SELECT COUNT(l) FROM BuildingEnterLog l
+            WHERE l.direction = 'IN'
+              AND l.createdDt >= :start
+              AND l.createdDt < :end
+              AND l.tenantId = :tenantId
+            """
+    )
+    int countInLogsAtHour(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end,
+            @Param("tenantId") String tenantId
+    );
 
     Page<BuildingEnterLog> findAllByTenantId(String tenantId, Pageable pageable);
 
