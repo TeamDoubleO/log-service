@@ -36,18 +36,28 @@ public class EnterLog extends BaseEntity {
     private VisitCategory visitCategory;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private EnterLog(String tenantId, Long areaId, Long memberId, String memberName, Long passId,VisitCategory visitCategory) {
+    private EnterLog(
+            String tenantId,
+            Long areaId,
+            Long memberId,
+            String memberName,
+            Long passId,
+            VisitCategory visitCategory) {
         this.tenantId = tenantId;
         this.areaId = areaId;
         this.memberId = memberId;
         this.memberName = memberName;
         this.passId = passId;
         this.visitCategory = visitCategory;
-
     }
 
     public static EnterLog createEnterLog(
-            String tenantId, Long areaId, Long memberId, String memberName, Long passId, VisitCategory visitCategory) {
+            String tenantId,
+            Long areaId,
+            Long memberId,
+            String memberName,
+            Long passId,
+            VisitCategory visitCategory) {
         return EnterLog.builder()
                 .tenantId(tenantId)
                 .areaId(areaId)

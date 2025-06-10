@@ -19,13 +19,11 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
               AND l.createdDt >= :start
               AND l.createdDt < :end
               AND l.tenantId = :tenantId
-            """
-    )
+            """)
     int countInLogsAtHour(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
-            @Param("tenantId") String tenantId
-    );
+            @Param("tenantId") String tenantId);
 
     Page<BuildingEnterLog> findAllByTenantId(String tenantId, Pageable pageable);
 
@@ -40,8 +38,7 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
               AND b.createdDt < :end
               AND b.tenantId = :tenantId
             GROUP BY b.buildingId, b.memberName, b.visitCategory
-            """
-    )
+            """)
     List<UpdateDailyEntryStatsRequest> countDailyGrouped(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
@@ -70,14 +67,12 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
               AND b.createdDt < :end
               AND b.tenantId = :tenantId
               AND b.visitCategory = :visitCategory
-            """
-    )
+            """)
     int countEnteredByCategory(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
             @Param("tenantId") String tenantId,
-            @Param("visitCategory") VisitCategory visitCategory
-    );
+            @Param("visitCategory") VisitCategory visitCategory);
 
     @Query(
             """
@@ -88,8 +83,7 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
               AND b.createdDt < :end
               AND b.tenantId = :tenantId
               AND b.visitCategory = :visitCategory
-            """
-    )
+            """)
     int countExitedByCategory(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
