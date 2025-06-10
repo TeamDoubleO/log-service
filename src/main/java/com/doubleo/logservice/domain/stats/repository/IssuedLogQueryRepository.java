@@ -32,8 +32,8 @@ public class IssuedLogQueryRepository {
             WHERE ila.tenantId = :tenantId
               AND ila.areaCode = :areaCode
               AND il.visitCategory IN :categories
-              AND il.startAt <= :endOfDay
-              AND il.expiredAt >= :startOfDay
+              AND il.createdDt <= :endOfDay
+              AND il.createdDt >= :startOfDay
         """;
 
         TypedQuery<Long> query = em.createQuery(jpql, Long.class);
