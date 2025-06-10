@@ -1,7 +1,6 @@
 package com.doubleo.logservice.global.util;
 
 import com.google.protobuf.Timestamp;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -17,8 +16,8 @@ public class TimestampUtils {
             return null;
         }
         return LocalDateTime.ofInstant(
-                Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos()), DEFAULT_ZONE_ID
-        );
+                Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos()),
+                DEFAULT_ZONE_ID);
     }
 
     public static Timestamp fromLocalDateTime(LocalDateTime localDateTime) {
@@ -26,6 +25,9 @@ public class TimestampUtils {
             return null;
         }
         Instant instant = localDateTime.atZone(DEFAULT_ZONE_ID).toInstant();
-        return Timestamp.newBuilder().setSeconds(instant.getEpochSecond()).setNanos(instant.getNano()).build();
+        return Timestamp.newBuilder()
+                .setSeconds(instant.getEpochSecond())
+                .setNanos(instant.getNano())
+                .build();
     }
 }
