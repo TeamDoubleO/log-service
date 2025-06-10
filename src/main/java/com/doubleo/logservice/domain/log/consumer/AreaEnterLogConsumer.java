@@ -5,6 +5,8 @@ import com.doubleo.logservice.domain.log.repository.EnterLogRepository;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+
+import com.doubleo.logservice.global.enums.VisitCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.stream.Consumer;
@@ -58,7 +60,9 @@ public class AreaEnterLogConsumer {
                             Long.parseLong((String) data.get("areaId")),
                             Long.parseLong((String) data.get("memberId")),
                             (String) data.get("memberName"),
-                            Long.parseLong((String) data.get("passId")));
+                            Long.parseLong((String) data.get("passId")),
+                            VisitCategory.valueOf((String) data.get("visitCategory"))
+                    );
 
             enterLogRepository.save(enterLog);
             redisTemplate.opsForStream().acknowledge(GROUP, msg);

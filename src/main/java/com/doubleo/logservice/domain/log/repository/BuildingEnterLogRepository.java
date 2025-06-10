@@ -24,17 +24,17 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
 
     @Query(
             """
-    SELECT new com.doubleo.logservice.domain.stats.dto.request.UpdateDailyEntryStatsRequest(
-        b.buildingId, b.memberName, p.visitCategory, COUNT(b)
+            SELECT new com.doubleo.logservice.domain.stats.dto.request.UpdateDailyEntryStatsRequest(
+                b.buildingId, b.memberName, b.visitCategory, COUNT(b)
+            )
+            FROM BuildingEnterLog b
+            WHERE b.direction = 'IN'
+              AND b.createdDt >= :start
+              AND b.createdDt < :end
+              AND b.tenantId = :tenantId
+            GROUP BY b.buildingId, b.memberName, b.visitCategory
+            """
     )
-    FROM BuildingEnterLog b
-    JOIN IssuedLog p ON b.passId = p.passId
-    WHERE b.direction = 'IN'
-      AND b.createdDt >= :start
-      AND b.createdDt < :end
-      AND b.tenantId = :tenantId
-    GROUP BY b.buildingId, b.memberName, p.visitCategory
-""")
     List<UpdateDailyEntryStatsRequest> countDailyGrouped(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
@@ -56,32 +56,33 @@ public interface BuildingEnterLogRepository extends JpaRepository<BuildingEnterL
 
     @Query(
             """
-    SELECT COUNT(b)
-    FROM BuildingEnterLog b
-    JOIN IssuedLog p ON b.passId = p.passId
-    WHERE b.direction = 'IN'
-      AND b.createdDt >= :start
-      AND b.createdDt < :end
-      AND b.tenantId = :tenantId
-      AND p.visitCategory = :visitCategory
-""")
+            SELECT COUNT(b)
+            FROM BuildingEnterLog b
+            WHERE b.direction = 'IN'
+              AND b.createdDt >= :start
+              AND b.createdDt < :end
+              AND b.tenantId = :tenantId
+              AND b.visitCategory = :visitCategory
+            """
+    )
     int countEnteredByCategory(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
             @Param("tenantId") String tenantId,
-            @Param("visitCategory") VisitCategory visitCategory);
+            @Param("visitCategory") VisitCategory visitCategory
+    );
 
     @Query(
             """
-    SELECT COUNT(b)
-    FROM BuildingEnterLog b
-    JOIN IssuedLog p ON b.passId = p.passId
-    WHERE b.direction = 'OUT'
-      AND b.createdDt >= :start
-      AND b.createdDt < :end
-      AND b.tenantId = :tenantId
-      AND p.visitCategory = :visitCategory
-""")
+            SELECT COUNT(b)
+            FROM BuildingEnterLog b
+            WHERE b.direction = 'OUT'
+              AND b.createdDt >= :start
+              AND b.createdDt < :end
+              AND b.tenantId = :tenantId
+              AND b.visitCategory = :visitCategory
+            """
+    )
     int countExitedByCategory(
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
