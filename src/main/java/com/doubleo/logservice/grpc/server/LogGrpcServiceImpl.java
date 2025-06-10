@@ -69,7 +69,8 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
                                 request.getAreaId(),
                                 request.getMemberId(),
                                 request.getMemberName(),
-                                request.getPassId())); // visitcategory 추가 필요
+                                request.getPassId(),
+                                VisitCategory.valueOf(request.getVisitCategory())));
         responseObserver.onNext(
                 CreateEnterLogResponse.newBuilder().setEnterLogId(enterLog.getId()).build());
         responseObserver.onCompleted();
