@@ -34,7 +34,7 @@ public class RetainedCountConsumer {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
+    @Scheduled(fixedDelay = 10000)
     public void consume() {
         List<MapRecord<String, Object, Object>> records =
                 redisTemplate

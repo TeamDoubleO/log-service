@@ -21,6 +21,7 @@ public class AreaEnterLogStreamProducer {
         message.put("memberId", request.memberId().toString());
         message.put("memberName", request.memberName());
         message.put("passId", request.passId().toString());
+        message.put("visitCategory", request.visitCategory().name());
         message.put("timestamp", LocalDateTime.now().toString());
 
         redisTemplate.opsForStream().add("area:enter:stream", message);

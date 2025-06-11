@@ -1,6 +1,8 @@
 package com.doubleo.logservice.grpc.server;
 
 import com.doubleo.logservice.domain.log.domain.*;
+import com.doubleo.logservice.domain.log.producer.AreaEnterLogStreamProducer;
+import com.doubleo.logservice.domain.log.producer.BuildingEnterLogStreamProducer;
 import com.doubleo.logservice.domain.log.repository.BuildingEnterLogRepository;
 import com.doubleo.logservice.domain.log.repository.EnterLogRepository;
 import com.doubleo.logservice.domain.log.repository.IssuedLogAreaRepository;
@@ -18,16 +20,22 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
     private final IssuedLogAreaRepository issuedLogAreaRepository;
     private final EnterLogRepository enterLogRepository;
     private final BuildingEnterLogRepository buildingEnterLogRepository;
+    private final AreaEnterLogStreamProducer areaEnterLogProducer;
+    private final BuildingEnterLogStreamProducer buildingEnterLogProducer;
+
 
     public LogGrpcServiceImpl(
             IssuedLogRepository issuedLogRepository,
             IssuedLogAreaRepository issuedLogAreaRepository,
             EnterLogRepository enterLogRepository,
-            BuildingEnterLogRepository buildingEnterLogRepository) {
+            BuildingEnterLogRepository buildingEnterLogRepository, AreaEnterLogStreamProducer areaProducer, BuildingEnterLogStreamProducer buildingEnterLogProducer) {
         this.issuedLogRepository = issuedLogRepository;
         this.issuedLogAreaRepository = issuedLogAreaRepository;
         this.enterLogRepository = enterLogRepository;
         this.buildingEnterLogRepository = buildingEnterLogRepository;
+        this.areaEnterLogProducer = areaProducer;
+
+        this.buildingEnterLogProducer = buildingEnterLogProducer;
     }
 
     @Override
@@ -62,17 +70,20 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
     public void createEnterLog(
             CreateEnterLogRequest request,
             StreamObserver<CreateEnterLogResponse> responseObserver) {
-        EnterLog enterLog =
-                enterLogRepository.save(
-                        EnterLog.createEnterLog(
-                                request.getTenantId(),
-                                request.getAreaId(),
-                                request.getMemberId(),
-                                request.getMemberName(),
-                                request.getPassId(),
-                                VisitCategory.valueOf(request.getVisitCategory())));
+        areaEnterLogProducer.sendAreaEnterLogToStream(
+                new com.doubleo.logservice.domain.log.dto.request.CreateAreaEnterLogRequest(
+                        request.getTenantId(),
+                        request.getAreaId(),
+                        request.getMemberId(),
+                        request.getMemberName(),
+                        request.getPassId(),
+                        VisitCategory.valueOf(request.getVisitCategory())
+                )
+        );
+
         responseObserver.onNext(
-                CreateEnterLogResponse.newBuilder().setEnterLogId(enterLog.getId()).build());
+                CreateEnterLogResponse.newBuilder().setEnterLogId(1L).build()
+        );
         responseObserver.onCompleted();
     }
 
@@ -80,20 +91,23 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
     public void createBuildingEnterLog(
             CreateBuildingEnterLogRequest request,
             StreamObserver<CreateBuildingEnterLogResponse> responseObserver) {
-        BuildingEnterLog buildingEnterLog =
-                buildingEnterLogRepository.save(
-                        BuildingEnterLog.createBuildingEnterLog(
-                                request.getTenantId(),
-                                request.getBuildingId(),
-                                request.getMemberId(),
-                                request.getMemberName(),
-                                request.getPassId(),
-                                Direction.valueOf(request.getDirection()),
-                                VisitCategory.valueOf(request.getVisitCategory())));
+        buildingEnterLogProducer.sendBuildingEnterLogToStream(
+                new com.doubleo.logservice.domain.log.dto.request.CreateBuildingEnterLogRequest(
+                        request.getTenantId(),
+                        request.getBuildingId(),
+                        request.getMemberId(),
+                        request.getMemberName(),
+                        request.getPassId(),
+                        Direction.valueOf(request.getDirection()),
+                        VisitCategory.valueOf(request.getVisitCategory())
+                )
+        );
+
         responseObserver.onNext(
                 CreateBuildingEnterLogResponse.newBuilder()
-                        .setBuildingEnterLogId(buildingEnterLog.getId())
-                        .build());
+                        .setBuildingEnterLogId(1L)
+                        .build()
+        );
         responseObserver.onCompleted();
     }
 }

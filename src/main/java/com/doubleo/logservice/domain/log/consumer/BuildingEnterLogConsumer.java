@@ -41,7 +41,7 @@ public class BuildingEnterLogConsumer {
         }
     }
 
-    @Scheduled(fixedDelay = 300000)
+    @Scheduled(fixedDelay = 10000)
     public void consumeMessages() {
         List<MapRecord<String, Object, Object>> messages =
                 redisTemplate
