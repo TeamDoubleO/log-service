@@ -20,6 +20,12 @@ public class LogController {
     private final LogService logService;
     private final TenantValidator tenantValidator;
 
+    @Operation(summary = "Health Check API", description = "서비스 상태 확인 API")
+    @GetMapping("/health")
+    public String HealthCheck() {
+        return "Log Service is healthy";
+    }
+
     @Operation(summary = "All issued log get API", description = "모든 출입증 발급 로그 조회 API")
     @GetMapping("/issued")
     public Page<IssuedLogResponse> IssuedLogListGet(
