@@ -23,12 +23,13 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
     private final AreaEnterLogStreamProducer areaEnterLogProducer;
     private final BuildingEnterLogStreamProducer buildingEnterLogProducer;
 
-
     public LogGrpcServiceImpl(
             IssuedLogRepository issuedLogRepository,
             IssuedLogAreaRepository issuedLogAreaRepository,
             EnterLogRepository enterLogRepository,
-            BuildingEnterLogRepository buildingEnterLogRepository, AreaEnterLogStreamProducer areaProducer, BuildingEnterLogStreamProducer buildingEnterLogProducer) {
+            BuildingEnterLogRepository buildingEnterLogRepository,
+            AreaEnterLogStreamProducer areaProducer,
+            BuildingEnterLogStreamProducer buildingEnterLogProducer) {
         this.issuedLogRepository = issuedLogRepository;
         this.issuedLogAreaRepository = issuedLogAreaRepository;
         this.enterLogRepository = enterLogRepository;
@@ -77,13 +78,9 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
                         request.getMemberId(),
                         request.getMemberName(),
                         request.getPassId(),
-                        VisitCategory.valueOf(request.getVisitCategory())
-                )
-        );
+                        VisitCategory.valueOf(request.getVisitCategory())));
 
-        responseObserver.onNext(
-                CreateEnterLogResponse.newBuilder().setEnterLogId(1L).build()
-        );
+        responseObserver.onNext(CreateEnterLogResponse.newBuilder().setEnterLogId(1L).build());
         responseObserver.onCompleted();
     }
 
@@ -99,15 +96,10 @@ public class LogGrpcServiceImpl extends LogServiceGrpc.LogServiceImplBase {
                         request.getMemberName(),
                         request.getPassId(),
                         Direction.valueOf(request.getDirection()),
-                        VisitCategory.valueOf(request.getVisitCategory())
-                )
-        );
+                        VisitCategory.valueOf(request.getVisitCategory())));
 
         responseObserver.onNext(
-                CreateBuildingEnterLogResponse.newBuilder()
-                        .setBuildingEnterLogId(1L)
-                        .build()
-        );
+                CreateBuildingEnterLogResponse.newBuilder().setBuildingEnterLogId(1L).build());
         responseObserver.onCompleted();
     }
 }
