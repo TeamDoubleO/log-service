@@ -10,4 +10,6 @@ public interface EnterLogRepository extends JpaRepository<EnterLog, Long> {
     List<EnterLog> findAllByTenantId(String tenantId);
 
     Page<EnterLog> findAllByTenantId(String tenantId, Pageable pageable);
+
+    Page<EnterLog> findAllByMemberNameAndTenantId(String memberName, String tenantId, Pageable pageable);
 }

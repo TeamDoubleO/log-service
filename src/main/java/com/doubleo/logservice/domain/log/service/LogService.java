@@ -8,9 +8,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface LogService {
-    Page<IssuedLogResponse> getAllIssuedLog(Pageable pageable);
+    Page<IssuedLogResponse> getAllIssuedLog(String keyword, Pageable pageable);
 
-    Page<EnterLogResponse> getAllEnterLog(Pageable pageable);
+    Page<EnterLogResponse> getAllEnterLog(String keyword, Pageable pageable);
 
     List<HourlyIssuanceResponse> getHourlyIssuanceList();
 }

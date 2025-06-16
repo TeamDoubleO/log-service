@@ -26,4 +26,6 @@ public interface IssuedLogRepository extends JpaRepository<IssuedLog, Long> {
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end,
             @Param("tenantId") String tenantId);
+
+    Page<IssuedLog> findAllByMemberNameAndTenantId(String memberName, String tenantId, Pageable pageable);
 }
