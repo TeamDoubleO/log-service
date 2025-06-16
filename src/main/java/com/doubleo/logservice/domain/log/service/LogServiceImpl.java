@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,13 @@ public class LogServiceImpl implements LogService {
     @Override
     public Page<IssuedLogResponse> getAllIssuedLog(String keyword, Pageable pageable) {
         String tenantId = tenantValidator.getTenantId();
+
+        pageable =
+                PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        Sort.by(Sort.Direction.DESC, "createdDt"));
+
         Page<IssuedLog> issuedLogs;
         if (keyword == null || keyword.isBlank()) {
             issuedLogs = issuedLogRepository.findAllByTenantId(tenantId, pageable);
@@ -79,6 +88,13 @@ public class LogServiceImpl implements LogService {
     @Override
     public Page<EnterLogResponse> getAllEnterLog(String keyword, Pageable pageable) {
         String tenantId = tenantValidator.getTenantId();
+
+        pageable =
+                PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        Sort.by(Sort.Direction.DESC, "createdDt"));
+
         Page<EnterLog> enterLogs;
         if (keyword == null || keyword.isBlank()) {
             enterLogs = enterLogRepository.findAllByTenantId(tenantId, pageable);
