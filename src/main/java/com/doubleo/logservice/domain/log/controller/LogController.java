@@ -29,15 +29,19 @@ public class LogController {
     @Operation(summary = "All issued log get API", description = "모든 출입증 발급 로그 조회 API")
     @GetMapping("/issued")
     public Page<IssuedLogResponse> IssuedLogListGet(
-            @RequestHeader("X-Admin-Id") Long adminId, Pageable pageable) {
-        return logService.getAllIssuedLog(pageable);
+            @RequestHeader("X-Admin-Id") Long adminId,
+            @RequestParam(required = false) String keyword,
+            Pageable pageable) {
+        return logService.getAllIssuedLog(keyword, pageable);
     }
 
     @Operation(summary = "All issued log get API", description = "모든 출입 로그 조회 API")
     @GetMapping("/enter")
     public Page<EnterLogResponse> EnterLogListGet(
-            @RequestHeader("X-Admin-Id") Long adminId, Pageable pageable) {
-        return logService.getAllEnterLog(pageable);
+            @RequestHeader("X-Admin-Id") Long adminId,
+            @RequestParam(required = false) String keyword,
+            Pageable pageable) {
+        return logService.getAllEnterLog(keyword, pageable);
     }
 
     @Operation(summary = "Number of issues per hour", description = "시간대별 출입증 발급 수 API")

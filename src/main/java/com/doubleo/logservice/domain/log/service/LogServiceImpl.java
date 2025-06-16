@@ -38,9 +38,15 @@ public class LogServiceImpl implements LogService {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public Page<IssuedLogResponse> getAllIssuedLog(Pageable pageable) {
+    public Page<IssuedLogResponse> getAllIssuedLog(String keyword, Pageable pageable) {
         String tenantId = tenantValidator.getTenantId();
-        Page<IssuedLog> issuedLogs = issuedLogRepository.findAllByTenantId(tenantId, pageable);
+        Page<IssuedLog> issuedLogs;
+        if (keyword == null || keyword.isBlank()) {
+            issuedLogs = issuedLogRepository.findAllByTenantId(tenantId, pageable);
+        } else {
+            issuedLogs =
+                    issuedLogRepository.findAllByMemberNameAndTenantId(keyword, tenantId, pageable);
+        }
 
         return issuedLogs.map(
                 issuedLog -> {
@@ -71,9 +77,15 @@ public class LogServiceImpl implements LogService {
     }
 
     @Override
-    public Page<EnterLogResponse> getAllEnterLog(Pageable pageable) {
+    public Page<EnterLogResponse> getAllEnterLog(String keyword, Pageable pageable) {
         String tenantId = tenantValidator.getTenantId();
-        Page<EnterLog> enterLogs = enterLogRepository.findAllByTenantId(tenantId, pageable);
+        Page<EnterLog> enterLogs;
+        if (keyword == null || keyword.isBlank()) {
+            enterLogs = enterLogRepository.findAllByTenantId(tenantId, pageable);
+        } else {
+            enterLogs =
+                    enterLogRepository.findAllByMemberNameAndTenantId(keyword, tenantId, pageable);
+        }
         return enterLogs.map(
                 enterLog ->
                         new EnterLogResponse(
