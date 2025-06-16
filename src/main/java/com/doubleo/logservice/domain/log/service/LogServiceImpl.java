@@ -43,9 +43,9 @@ public class LogServiceImpl implements LogService {
         Page<IssuedLog> issuedLogs;
         if (keyword == null || keyword.isBlank()) {
             issuedLogs = issuedLogRepository.findAllByTenantId(tenantId, pageable);
-        }
-        else {
-            issuedLogs = issuedLogRepository.findAllByMemberNameAndTenantId(keyword, tenantId, pageable);
+        } else {
+            issuedLogs =
+                    issuedLogRepository.findAllByMemberNameAndTenantId(keyword, tenantId, pageable);
         }
 
         return issuedLogs.map(
@@ -82,9 +82,9 @@ public class LogServiceImpl implements LogService {
         Page<EnterLog> enterLogs;
         if (keyword == null || keyword.isBlank()) {
             enterLogs = enterLogRepository.findAllByTenantId(tenantId, pageable);
-        }
-        else {
-            enterLogs = enterLogRepository.findAllByMemberNameAndTenantId(keyword, tenantId, pageable);
+        } else {
+            enterLogs =
+                    enterLogRepository.findAllByMemberNameAndTenantId(keyword, tenantId, pageable);
         }
         return enterLogs.map(
                 enterLog ->
