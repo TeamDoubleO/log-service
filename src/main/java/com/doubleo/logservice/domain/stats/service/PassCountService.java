@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface PassCountService {
     List<PassCountInfoResponse> getPassCount(PassCountInfoRequest request);
+
+    List<PassCountInfoResponse> getMockPassCount();
 }

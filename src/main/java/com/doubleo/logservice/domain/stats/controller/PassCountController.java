@@ -20,4 +20,10 @@ public class PassCountController {
             @RequestBody @Valid PassCountInfoRequest request) {
         return passCountService.getPassCount(request);
     }
+
+    @PostMapping("/mock/search")
+    public List<PassCountInfoResponse> mockPassCountListGet(
+            @RequestBody(required = false) PassCountInfoRequest request) {
+        return passCountService.getMockPassCount();
+    }
 }
